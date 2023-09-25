@@ -5,23 +5,26 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
-
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Entity
-@EntityListeners(AuditingEntityListener.class)
-public class AccountUser extends BaseEntity{
-    //각 테이블 간 기본키를 공통으로 가져감
+@Builder(buildMethodName = "doesNotUseThisBuilder")
+public class BaseEntity {
+    @Id
+    @GeneratedValue
+    private Long id;
 
-    private String name;
+    @CreatedDate
+    private LocalDateTime createdAt;
 
-
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 }
